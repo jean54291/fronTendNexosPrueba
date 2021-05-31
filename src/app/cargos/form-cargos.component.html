@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="card-body">
+        <h5 class="card-title">{{titulo}}</h5>
+        <ngb-alert #staticAlert *ngIf="dangerMessage" type="danger" (closed)="dangerMessage = ''">{{ dangerMessage }}</ngb-alert>
+        <form>
+            <div>
+                <label for="descripcion" class="col-form-label col-sm-2">Descripcion</label>
+                <div class="col-sm-6">
+                    <input type="text" class="from-control" name="descripcion" [(ngModel)]="cargos.descripcion" >
+                </div>
+            </div>
+            <br>
+            <button class="btn btn-success" role="button" (click)='create()' *ngIf="!cargos.idCargo else elseBlock">Registrar</button>
+            <ng-template #elseBlock>
+                <button class="btn btn-success" role="button" (click)='update()'>Actualizar</button>
+            </ng-template>
+            
+        </form>
+    </div>
+    
+</div>

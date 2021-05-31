@@ -1,0 +1,46 @@
+<nav class="nav nav-fill">
+    <a class="nav-link active" aria-current="page" href="#">MERCANCIAS</a>
+    <a class="nav-link" href="/usuarios">USUARIOS</a>
+    <a class="nav-link" href="/cargos">CARGOS</a>
+    <a class="nav-link col-sm-6" tabindex="-1">
+        <!-- <div class="col-sm-12"> -->
+            <label for="usuariosLogin" class="col-form-label col-sm-2">Usuario Login</label>
+            <select [(ngModel)]="selectUsuario" #selectUsuarios  (change)="getUsuario(selectUsuario);"  name="selectUsuario">
+                <option *ngFor="let c of usuarios;" [value]="c.idUsuario">{{c.nombre}}</option>
+            </select>
+            <input type="hidden" class="from-control" name="usuariosLogin" [(ngModel)]="usuariosLogin" >
+        <!-- </div> -->
+    </a>
+  </nav>
+
+<div class="container">
+    <h5>{{ titulo }}</h5>
+    <button class="btn btn-info" type="button" [routerLink]="['/usuarios/form']">Nuevo Usuario</button>
+    <ngb-alert #selfClosingAlert *ngIf="dangerMessage" type="danger" (closed)="dangerMessage = ''">{{ dangerMessage }}</ngb-alert>
+    <ngb-alert #staticAlert *ngIf="successMessage" type="success" (closed)="successMessage = ''">{{ successMessage }}</ngb-alert>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">DESCRIPCION</th>
+                <th scope="col">EDAD</th>
+                <th scope="col">FECHA INGRESO</th>
+                <th scope="col">CARGO</th>
+                <th scope="col">EDITAR</th>
+                <th scope="col">ELIMINAR</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let usuario of usuarios">
+                <td>{{usuario.idUsuario}}</td>
+                <td>{{usuario.nombre}}</td>
+                <td>{{usuario.edad}}</td>
+                <td>{{usuario.fecha_ingreso}}</td>
+                <td *ngIf="usuario.cargo != null">{{usuario.cargo.descripcion}}</td>
+                <td *ngIf="usuario.cargo == null"></td>
+                <td><button type="button" name="button" class="btn btn-primary" [routerLink]="['/usuarios/form',usuario.idUsuario]">Editar</button></td>
+                <td><button type="button" name="button" class="btn btn-danger" (click)="delete(usuario,usuariosLogin)">Eliminar</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

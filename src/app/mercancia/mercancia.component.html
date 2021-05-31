@@ -1,0 +1,92 @@
+<nav class="nav nav-fill">
+    <a class="nav-link active" aria-current="page" href="#">MERCANCIAS</a>
+    <a class="nav-link" href="/usuarios">USUARIOS</a>
+    <a class="nav-link" href="/cargos">CARGOS</a>
+    <a class="nav-link col-sm-6" tabindex="-1">
+        <!-- <div class="col-sm-12"> -->
+            <label for="usuariosLogin" class="col-form-label col-sm-2">Usuario Login</label>
+            <select [(ngModel)]="selectUsuario" #selectUsuarios  (change)="getUsuario(selectUsuario);"  name="selectUsuario">
+                <option *ngFor="let c of usuarios;" [value]="c.idUsuario">{{c.nombre}}</option>
+            </select>
+            <input type="hidden" class="from-control" name="usuariosLogin" [(ngModel)]="usuariosLogin" >
+        <!-- </div> -->
+    </a>
+  </nav>
+
+
+<div class="container-fluid" >
+    <div class="row">
+        <div class="col-sm-6"><h3>{{ titulo }}</h3></div>
+        
+    </div>
+       
+    
+    <div class="row">
+        <h4>Filtros</h4>
+        <div class="col-sm-4">
+            <label for="filtrosFecha" class="col-form-label col-sm-3">Usuario Registro</label>
+            <select [(ngModel)]="selectUsuariofilter" #selectUsuariofilters  (change)="getUsuarioFiltro(selectUsuariofilter);"  name="selectUsuariofilter">
+                <option *ngFor="let c of usuarios;" [value]="c.idUsuario">{{c.nombre}}</option>
+            </select>
+            <input type="hidden" class="from-control" name="usuariosFiltro" [(ngModel)]="usuariosFiltro" >
+        </div>
+        <div  class="col-sm-4">
+            <label for="filtrosFecha" class="col-form-label col-sm-3">Fecha Registro</label>
+            <input type="date" class="from-control" name="descripcion" [(ngModel)]="filtrosFecha" >
+        </div>
+        <div  class="col-sm-4">
+            <label for="filtrosNombre" class="col-form-label col-sm-3">Nombre</label>
+            <input type="text" class="from-control" name="nombre" [(ngModel)]="filtrosNombre" >
+        </div>
+        
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <button class="btn btn-info" type="button" [routerLink]="['/mercancias/form']">Nuevo Usuario</button>
+        </div>
+        <div class="col-sm-4">
+            <button class="btn btn-info" type="button" (click)='cargarFiltros()'>Consultar</button>
+        </div>
+        <div class="col-sm-4">
+            <button class="btn btn-info" type="button" (click)='limpiarFiltros()'>LimpiarFiltros</button>
+        </div>
+        
+        
+        <div class="col-sm-12">
+            <ngb-alert #selfClosingAlert *ngIf="dangerMessage" type="danger" (closed)="dangerMessage = ''">{{ dangerMessage }}</ngb-alert>
+            <ngb-alert #staticAlert *ngIf="successMessage" type="success" (closed)="successMessage = ''">{{ successMessage }}</ngb-alert>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">NOMBRE</th>
+                <th scope="col">CANTIDAD</th>
+                <th scope="col">FECHA INGRESO</th>
+                <th scope="col">USUARIO REGISTRO</th>
+                <th scope="col">FECHA MODIFICACION</th>
+                <th scope="col">USUARIO ULTIMA MODIFICACION</th>
+                <th scope="col">EDITAR</th>
+                <th scope="col">ELIMINAR</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let mercancia of mercancias">
+                <td>{{mercancia.idMercancia}}</td>
+                <td>{{mercancia.nombre}}</td>
+                <td>{{mercancia.cantidad}}</td>
+                <td>{{mercancia.fecha_ingreso}}</td>
+                <td *ngIf="mercancia.usuario_asignado != null">{{mercancia.usuario_asignado.nombre}}</td>
+                <td *ngIf="mercancia.usuario_asignado == null"></td>
+                <td>{{mercancia.fecha_modificacion}}</td>
+                <td *ngIf="mercancia.last_user != null">{{mercancia.last_user.nombre}}</td>
+                <td *ngIf="mercancia.last_user == null"></td>
+                <td><button type="button" name="button" class="btn btn-primary" [routerLink]="['/mercancias/form',mercancia.idMercancia]">Editar</button></td>
+                <td><button type="button" name="button" class="btn btn-danger" (click)="delete(mercancia,usuariosLogin)">Eliminar</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
